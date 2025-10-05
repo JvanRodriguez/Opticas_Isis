@@ -49,7 +49,7 @@ public class Presenter {
                     showCrudCitas();
                     subOption = view.inputInteger();
                     switch (subOption) {
-                        case 31 -> System.out.println(createCita());
+                        case 31 -> System.out.println("ID de la cita: " + createCita());
                         case 32 -> readCita();
                         case 33 -> System.out.println(updateCita());
                         case 34 -> System.out.println(deleteCita());
@@ -186,7 +186,7 @@ public class Presenter {
     // CITAS
     // ========================================
 
-    private boolean createCita() {
+    private int createCita() {
         view.ShowMessage("Documento del optometra:");
         String docOptometra = view.inputString();
         view.ShowMessage("Documento del paciente:");
@@ -203,7 +203,6 @@ public class Presenter {
         int hora = view.inputInteger();
         view.ShowMessage("Minutos:");
         int minutos = view.inputInteger();
-
         return sistema.crearCita(docOptometra, docPaciente, idConsultorio, anio, mes, dia, hora, minutos);
     }
 
@@ -278,7 +277,6 @@ public class Presenter {
             view.ShowMessage("ID: " + c.getId());
             view.ShowMessage("Dirección: " + c.getDireccion());
             view.ShowMessage("Ciudad: " + c.getCiudad());
-            view.ShowMessage("Estado: " + c.getEstadoConsultorio());
         } else {
             view.ShowMessage("No se encontró el consultorio.");
         }

@@ -8,7 +8,7 @@ public class Paciente extends Persona{
 			String numero_celular, int anio, int mes, int dia) {
 		this.setNombre(nombre);
 		this.setNumero_documento(numero_documento);
-		this.setNumero_documento(numero_documento);
+		this.setNumero_celular(numero_celular);
 		this.setFecha_nacimiento(LocalDate.of(anio, mes, dia)); 
 	}
 	
