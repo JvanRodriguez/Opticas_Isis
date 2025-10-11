@@ -1,5 +1,7 @@
 package presenter;
 
+import java.util.List;
+
 import model.*;
 import view.View;
 
@@ -66,6 +68,84 @@ public class Presenter {
                         case 44 -> System.out.println(deleteConsultorio());
                     }
                     break;
+
+                case 5:
+                    showConsultaCitas();
+                    subOption = view.inputInteger();
+                    switch (subOption){
+                        case 51 -> consultarCitaDia();
+                        case 52 -> consultarCitaSemana();
+                        case 53 -> consultarCitaMes();
+                    }
+            }
+        }
+    }
+
+    private void consultarCitaMes() {
+        view.ShowMessage("Mes de las citas a consultar");
+        int mes = view.inputInteger();
+        List<Cita> citasMes = sistema.consultarCitasMes(mes);
+        if (citasMes.isEmpty()) {
+            view.ShowMessage("No hay citas agendadas ese mes");
+        }else{
+            for(Cita cita : citasMes){
+                Optometra opt = sistema.leerOptometra(cita.getDocumento_optometra());
+                view.ShowMessage("OPTOMETRA");
+                view.ShowMessage("Nombre: " + opt.getNombre());
+                Paciente pac = sistema.leerPaciente(cita.getDocumento_paciente());
+                view.ShowMessage("PACIENTE");
+                view.ShowMessage("Nombre: " + pac.getNombre());
+                view.ShowMessage(cita.getFecha().toString());
+                view.ShowMessage(cita.getHora().toString());
+                Consultorio cons = sistema.leerConsultorio(cita.getId_consultorio());
+                view.ShowMessage("Consultorio: " + cons.getId() + " Dirección: " + cons.getDireccion());
+                view.ShowMessage("------------------------------------");
+            }
+        }
+    }
+
+    private void consultarCitaSemana() {
+        view.ShowMessage("Inicio de Semana a consultar");
+        int inicioSemana = view.inputInteger();
+        view.ShowMessage("Fin de Semana a consultar");
+        int finSemana = view.inputInteger();
+        view.ShowMessage("Mes de la semana a consultar");
+        int mes = view.inputInteger();
+        List<Cita> citasSemana = sistema.consultarCitasSemana(inicioSemana, finSemana, mes);
+        if (citasSemana.isEmpty()) {
+            view.ShowMessage("No hay citas agendadas esa semana");
+        }else{
+            for(Cita cita : citasSemana){
+                view.ShowMessage("OPTOMETRA");
+                sistema.leerOptometra(cita.getDocumento_optometra());
+                view.ShowMessage("PACIENTE");
+                sistema.leerPaciente(cita.getDocumento_paciente());
+                view.ShowMessage(cita.getFecha().toString());
+                view.ShowMessage(cita.getHora().toString());
+                sistema.leerConsultorio(cita.getId_consultorio());
+                view.ShowMessage("------------------------------------");
+            }
+        }
+    }
+
+    private void consultarCitaDia() {
+        view.ShowMessage("Día:");
+        int dia = view.inputInteger();
+        view.ShowMessage("Mes:");
+        int mes = view.inputInteger();
+        List<Cita> citasDia = sistema.consultarCitasDia(dia, mes);
+        if(citasDia.isEmpty()){
+            view.ShowMessage("No hay citas agendadas para ese día");
+        }else{
+            for(Cita cita : citasDia){
+                view.ShowMessage("OPTOMETRA");
+                sistema.leerOptometra(cita.getDocumento_optometra());
+                view.ShowMessage("PACIENTE");
+                sistema.leerPaciente(cita.getDocumento_paciente());
+                view.ShowMessage(cita.getFecha().toString());
+                view.ShowMessage(cita.getHora().toString());
+                sistema.leerConsultorio(cita.getId_consultorio());
+                view.ShowMessage("------------------------------------");
             }
         }
     }
@@ -334,6 +414,13 @@ private boolean deleteConsultorio() {
         view.ShowMessage("44 - Eliminar");
     }
 
+    private void showConsultaCitas() {
+        view.ShowMessage("CITAS");
+        view.ShowMessage("51 - Consultar por Día del mes");
+        view.ShowMessage("52 - Consultar por Semana del mes");
+        view.ShowMessage("53 - Consultar por Mes");
+    }
+
     private void showMenu() {
         view.ShowMessage(" ");
         view.ShowMessage("OPCIONES");
@@ -341,6 +428,7 @@ private boolean deleteConsultorio() {
         view.ShowMessage("2 - CRUD Pacientes");
         view.ShowMessage("3 - CRUD Citas");
         view.ShowMessage("4 - CRUD Consultorios");
+        view.ShowMessage("5 - Consultar citas");
         view.ShowMessage("0 - Salir");
     }
 }

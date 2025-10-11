@@ -3,7 +3,9 @@ package model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class SistemaReservas {
     private HashMap<String, Optometra> optometras;
@@ -157,6 +159,41 @@ public class SistemaReservas {
 
     public boolean eliminarConsultorio(String id) {
         return consultorios.remove(id) != null;
+    }
+
+    // ================================
+    // CONSULTA CITAS POR CRITERIO
+    // ================================
+    public List<Cita> consultarCitasDia(int dia, int mes){
+        List<Cita> citasDia = new ArrayList<>();
+        for(Cita cita: citas.values()){
+            if(cita.getFecha().getDayOfMonth() == dia && cita.getFecha().getMonthValue() == mes){
+                citasDia.add(cita);
+            }
+        }
+        return citasDia;
+    }
+
+    public List<Cita> consultarCitasSemana(int inicioSemana, int finSemana, int mes){
+        List<Cita> citasSemana = new ArrayList<>();
+        for(Cita cita : citas.values()){
+            int diaCita = cita.getFecha().getDayOfMonth();
+            if(diaCita >= inicioSemana && diaCita <= finSemana &&
+                cita.getFecha().getMonthValue() == mes){
+                citasSemana.add(cita);
+            }
+        }
+        return citasSemana;
+    }
+
+    public List<Cita> consultarCitasMes(int mes){
+        List<Cita> citasMes = new ArrayList<>();
+        for(Cita cita: citas.values()){
+            if(cita.getFecha().getMonthValue() == mes){
+                citasMes.add(cita);
+            }
+        }
+        return citasMes;
     }
 
 }
